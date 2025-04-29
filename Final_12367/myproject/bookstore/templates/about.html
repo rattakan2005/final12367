@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        .header {
+            background-color: #6C5CE7;
+            padding: 30px 0;
+            text-align: center;
+            color: white;
+        }
+        .content-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .content-container h2 {
+            color: #6C5CE7;
+        }
+        .content-container p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+        }
+    </style>
+
+    <div class="header">
+        <h1>Book Book Store</h1>
+        <p>ร้านเช่าหนังสือสำหรับคนรักการอ่าน</p>
+    </div>
+
+    <div class="content-container">
+        <h2>เกี่ยวกับเรา</h2>
+        <p>
+            Book Book Store ก่อตั้งขึ้นจากความรักในหนังสือและการอ่าน 
+            เราเปิดให้บริการเช่าหนังสือหลากหลายประเภท ไม่ว่าจะเป็นนวนิยาย, การ์ตูน, หนังสือพัฒนาตนเอง และอื่นๆ อีกมากมาย
+            เพื่อให้คุณสามารถเข้าถึงหนังสือที่คุณชื่นชอบได้อย่างง่ายดาย และในราคาประหยัด
+        </p>
+
+        <p>
+            เป้าหมายของเราคือการส่งเสริมวัฒนธรรมการอ่าน และสร้างสังคมแห่งการแบ่งปันความรู้
+            ไม่ว่าคุณจะเป็นนักอ่านตัวยง หรือเพิ่งเริ่มต้น เรามีหนังสือสำหรับทุกคน
+        </p>
+    </div>
+{% endblock %}

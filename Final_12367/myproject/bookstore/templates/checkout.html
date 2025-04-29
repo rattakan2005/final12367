@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}
+หน้าชำระเงิน
+{% endblock %}
+
+{% block content %}
+<style>
+    .checkout-container {
+        text-align: center;
+        padding: 40px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        max-width: 450px;
+        margin: 60px auto;
+    }
+
+    .checkout-container h1 {
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .checkout-container p {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .checkout-container img {
+        width: 200px;
+        margin: 20px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-info {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 15px;
+        color: #444;
+    }
+
+    .payment-info p {
+        margin: 5px 0;
+    }
+
+    .file-upload {
+        margin-top: 20px;
+    }
+
+    .file-upload input {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .file-info {
+        font-size: 13px;
+        color: #888;
+    }
+
+    .checkout-container button {
+        margin-top: 20px;
+        padding: 12px 28px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .checkout-container button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<div class="checkout-container">
+    <h1>ชำระเงิน</h1>
+    <p>ยอดชำระ: <strong>20 บาท</strong></p>
+    
+    <img src="https://png.pngtree.com/template/20211025/ourlarge/pngtree-square-qr-code-scanning-blue-pink-aesthetic-cartoon-qr-code-image_658998.jpg" alt="QR Code">
+    
+    <div class="payment-info">
+        <p><strong>พร้อมเพย์:</strong> 1234567890</p>
+        <p><strong>ชื่อบัญชี:</strong> สุดหล่อ</p>
+        <p><strong>ธนาคาร:</strong> SOS</p>
+    </div>
+    <form class="file-upload" action="/index" method="post" enctype="multipart/form-data" onsubmit="myFunction()">
+        {% csrf_token %}
+        <label for="payment-proof">อัปโหลดหลักฐานการโอนเงิน</label><br>
+        <input type="file" name="payment-proof" id="payment-proof" accept="image/*, .pdf" required>
+        <div class="file-info">
+            <p>prombid</p>
+        </div>
+        <button type="submit">ยืนยันการชำระเงิน</button>
+    </form>
+    
+    <script>
+        function myFunction(){
+            alert("ชำระเงินเสร็จสิ้น");
+        }
+    </script>
+{% endblock %}

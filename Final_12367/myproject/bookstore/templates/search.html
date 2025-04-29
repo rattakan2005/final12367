@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title%}
+ค้นหา
+{% endblock%}
+
+{%block content%}
+<style>
+.book-card {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    height: var(--book-height);
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    position: relative;
+}
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.book-cover {
+    height: 65%;
+    overflow: hidden;
+    position: relative;
+    
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s;
+}
+.book-card:hover .book-cover img {
+    transform: scale(1.05);
+}
+
+.book-info {
+    padding: 15px;
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.book-author {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .book-slider {
+        --book-width: 180px;
+        --book-height: 280px;
+        --gap: 15px;
+    }
+}
+
+</style>
+{% load static %}
+
+{% if request.GET.q %}
+    {% if books %}
+        <div class="row">
+            {% for book in books %}
+                <div class="col-md-4">
+                    <div class="book-card">
+                        <!-- แสดงภาพของหนังสือ -->
+
+
+
+                        <div class="content">
+                            <!-- แสดงชื่อหนังสือ -->
+                            <div class="title">{{ book.name }}</div><br>
+                            
+                            <!-- แสดงหมวดหมู่ -->
+                            <p class="category">หมวดหมู่: {{ book.category }}</p>
+                            
+                            <!-- แสดงราคาค่าเช่า -->
+                            <div class="price">ราคาค่าเช่า: {{ book.price }} บาท</div>
+                            
+                            <!-- แสดงสถานะ -->
+                            <div class="status">
+                                {% if book.status == 'onrent' %}
+                                    สถานะ: ติดเช่า
+                                {% else %}
+                                    สถานะ: ว่างให้เช่า
+                                {% endif %}
+                            </div>
+
+                            <!-- แสดงวันที่ -->
+                            <div class="date">วันที่เพิ่ม: {{ book.date }}</div>
+
+                            <!-- ลิงก์ไปยังหน้าชำระเงิน -->
+                            <a href="{% url 'checkout' %}" class="btn btn-dark" style="background-color: #333;">เช่า</a>
+
+                            <!-- ฟอร์มสำหรับการเพิ่มลงตะกร้า -->
+                            <form method="POST" action="{% url 'add_to_cart' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="book_id" value="{{ book.id }}">
+                                <button type="button" class="btn btn" style="background-color: #333; color: white;" data-book-id="{{ book.id }}" class="add-to-cart-btn">
+                                    ➕ เพิ่มลงตะกร้า
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>ไม่พบหนังสือที่ค้นหา</p>
+    {% endif %}
+{% else %}
+<p><h1>ไม่พบหนังสือที่ค้นหา</h1></p>
+{% endif %}
+
+{%endblock%}

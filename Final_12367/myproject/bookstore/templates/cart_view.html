@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% load custom_filters %}
+
+{% block content %}
+<style>
+
+</style>
+
+<div class="container">
+    <h1 class="cart-title">🛒 ตะกร้าสินค้า</h1>
+
+    <table class="table table-bordered text-center" id="cart-table">
+        <thead class="thead-light">
+            <tr>
+                <th>สินค้า</th>
+                <th>ราคา</th>
+                <th>จำนวน</th>
+                <th>ราคารวม</th>
+                <th>ลบ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if all_book %}
+                {% for book in all_book %}
+                <tr>
+                    <td>{{ book.name }}</td>
+                    <td>฿{{ book.price|floatformat:2 }}</td>
+                    <td>{{ book.quantity }}</td>
+                    <td>฿{{ book.total_price|floatformat:2 }}</td>
+                    <td>
+                        <form method="post" action="{% url 'remove_from_cart' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">ลบ</button>
+                        </form>
+                    </td>                    
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">ไม่มีสินค้าในตะกร้า</td>
+                </tr>
+            {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right"><strong>รวมทั้งหมด:</strong></td>
+                <td colspan="2"><strong id="total-price">฿{{ total_price|floatformat:2 }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    {% if all_book %}
+    <div class="total-price">
+        ยอดรวมทั้งหมด: {{ total_price|floatformat:2 }} บาท
+    </div>
+    <a href="{% url 'checkout' %}" class="checkout-btn">🛍️ ดำเนินการชำระเงิน</a>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const table = document.getElementById('cart-table');
+
+    table.addEventListener('click', function (e) {
+        if (e.target.classList.contains('delete-btn')) {
+            const row = e.target.closest('tr');
+            row.remove();
+            updateTotal();
+        }
+    });
+
+
+    function updateTotal() {
+        let total = 0;
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const totalCell = row.cells[3];
+            if (totalCell) {
+                const priceText = totalCell.innerText.replace('฿', '').replace(',', '');
+                const price = parseFloat(priceText);
+                if (!isNaN(price)) {
+                    total += price;
+                }
+            }
+        });
+        document.getElementById('total-price').innerText = `฿${total.toFixed(2)}`;
+    }
+});
+</script>
+
+{% endblock %}
